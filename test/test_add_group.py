@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from group import Group
-from application import Application
+from model.group import Group
+from fixture.application import Application
 import pytest
 
 @pytest.fixture
@@ -11,8 +11,8 @@ def app(request):
 
 def test_add_group(app):
     app.open_home_page()
-    app.login(username="admin", password="secret")
+    app.session.login(username="admin", password="secret")
     app.create_group(Group(header="wasd", footer="wasd", name="wasd"))
-    app.logout()
+    app.session.logout()
 
 
