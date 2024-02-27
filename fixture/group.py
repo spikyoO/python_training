@@ -1,8 +1,6 @@
 from selenium.webdriver.common.by import By
 
-
 class GroupHelper: 
-
     def __init__(self, app):
         self.app = app
 
@@ -22,6 +20,13 @@ class GroupHelper:
         driver.find_element(By.NAME, "group_footer").click()
         driver.find_element(By.NAME, "group_footer").clear()
         driver.find_element(By.NAME, "group_footer").send_keys(group.footer)
+
+    def delete_first_group(self):
+        driver = self.app.driver
+        # select first group
+        driver.find_element(By.NAME, "selected[]").click()
+        # submit deletion
+        driver.find_element(By.NAME, "delete").click()
 
     def return_to_group_page(self):
         driver = self.app.driver
