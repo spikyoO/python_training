@@ -1,2 +1,2 @@
 # python_training
-## Repository for a basic testing framework
+## Repository for a basic automated testing framework
