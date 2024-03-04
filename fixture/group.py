@@ -49,3 +49,8 @@ class GroupHelper:
     def return_to_group_page(self):
         driver = self.app.driver
         driver.find_element(By.LINK_TEXT, "group page").click()
+
+    def count(self):
+        driver = self.app.driver
+        self.open_group_page()
+        return len(driver.find_elements(By.NAME, "selected[]"))
