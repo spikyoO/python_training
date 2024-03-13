@@ -27,6 +27,7 @@ class GroupHelper:
                           name="GroupCreated",
                           attachment_type=AttachmentType.PNG)
         self.return_to_group_page()
+        self.group_cache = None
         
     def change_field_value(self, field_name, text):
         driver = self.app.driver
@@ -62,6 +63,7 @@ class GroupHelper:
                           name="DeletedFirstGroup",
                           attachment_type=AttachmentType.PNG)
         self.return_to_group_page()
+        self.group_cache = None
 
     def edit_first_group(self, new_group_data):
         driver = self.app.driver
@@ -73,6 +75,7 @@ class GroupHelper:
             allure.attach(self.app.driver.get_screenshot_as_png(),
                           name="EditedFirstGroup",
                           attachment_type=AttachmentType.PNG)
+        self.group_cache = None
 
     def return_to_group_page(self):
         driver = self.app.driver
@@ -87,14 +90,17 @@ class GroupHelper:
         self.open_group_page()
         return len(driver.find_elements(By.NAME, "selected[]"))
 
+    group_cache = None
+
     def get_group_list(self):
-        driver = self.app.driver
-        self.open_group_page()
-        groups_list = []
-        for group in driver.find_elements(By.CSS_SELECTOR, "span.group"):
-            text = group.text
-            id = driver.find_element(By.NAME, "selected[]").get_attribute("value")
-            groups_list.append(Group(name=text, id=id))
-        with allure.step("Got groups list"):
-            pass
-        return groups_list
+        if self.group_cache is None:
+            driver = self.app.driver
+            self.open_group_page()
+            self.group_cache = []
+            for group in driver.find_elements(By.CSS_SELECTOR, "span.group"):
+                text = group.text
+                id = driver.find_element(By.NAME, "selected[]").get_attribute("value")
+                self.group_cache.append(Group(name=text, id=id))
+            with allure.step("Got groups list"):
+                pass
+        return list(self.group_cache)
